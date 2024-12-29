@@ -1,0 +1,13 @@
+const mongoose = require("mongoose");
+
+const InterviewSchema = new mongoose.Schema({
+    applicationId: { type: mongoose.Schema.Types.ObjectId, ref: "Application", required: true },
+    scheduledDate: { type: Date, required: true },
+    format: { type: String, enum: ["In-person", "Virtual"], required: true },
+    link  : { type: String },
+    status: { type: String, enum: ["Scheduled", "Completed", "Cancelled"], default: "Scheduled" },
+    feedback: { type: String },
+    createdAt: { type: Date, default: Date.now },
+  });
+  
+  module.exports = mongoose.model("Interview", InterviewSchema);
