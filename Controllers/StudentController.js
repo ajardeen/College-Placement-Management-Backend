@@ -78,12 +78,7 @@ const getStudentById = async (req, res) => {
 const getAllJobs = async (req, res) => {
   try {
     const { email } = req.body;
-    // const student = await Student.findOne({ email });
-    // console.log(student);
-
-    // if (!student) {
-    //   return res.status(404).json({ error: "Student not found" });
-    // }
+   
 
     const jobs = await JobPosting.find();
 
@@ -229,7 +224,7 @@ const getStudentApplications = async (req, res) => {
         };
       })
     );
-    console.log(filteredApplications);
+    
     res.status(200).json(filteredApplications);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch applications" });
@@ -251,10 +246,10 @@ const registerForDrive = async (req, res) => {
   try {
     const { formData, role } = req.body;
     const { name, email, driveid } = formData;
-    console.log(driveid);
+  
 
     const drive = await PlacementDrive.findById(driveid);
-    console.log(drive);
+  
 
     if (!drive) {
       return res.status(404).json({ error: "Drive not found" });
@@ -317,6 +312,7 @@ const studentInterviewStatus = async (req, res) => {
         interviewStatus: findInterview ? findInterview.status : "Not Applied",
         interviewDate: findInterview ? findInterview.scheduledDate : null,
         interviewFormat: findInterview ? findInterview.format : null,
+        interviewLink: findInterview ? findInterview.link : null,
         interviewFeedback: findInterview ? findInterview.feedback : null,
       };
     }));

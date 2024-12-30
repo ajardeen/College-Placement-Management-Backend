@@ -60,7 +60,7 @@ const loginCompany = async (req, res) => {
     }
     //Validating password for found Company
     const passwordValidation = await bcrypt.compare(password, company.password);
-    console.log("passwordValidation", passwordValidation);
+   
     
     if (passwordValidation) {
       const token = await generateToken(company);
@@ -224,15 +224,7 @@ const scheduleInterview = async (req, res) => {
       link = "",
       companyid,
     } = req.body;
-    console.log({
-      applicationId,
-      scheduledDate,
-      format,
-      status,
-      feedback,
-      link,
-      companyid,
-    });
+   
     const job = await JobPosting.findById(applicationId);
     if (!job) {
       return res.status(404).json({ error: "Application not found" });
@@ -245,6 +237,7 @@ const scheduleInterview = async (req, res) => {
       status,
       feedback,
       link,
+      companyId: companyid,
     });
     await newInterview.save();
     application.status = "Shortlisted";
@@ -252,7 +245,7 @@ const scheduleInterview = async (req, res) => {
 
     const company = await Company.findById(companyid);
     const student = await Student.findById(application.studentId);
-    console.log(student.email, "student");
+
 
     try {
       // Send mail
@@ -340,7 +333,7 @@ const registerForDrive = async (req, res) => {
 //zoom interview
 
 const scheduleZoomMeeting =async (req, res) => {
-  console.log("Request body:", req.body);
+ 
   
   try {
     const formData = req.body; // Expect topic, startTime, duration, password
@@ -352,6 +345,18 @@ const scheduleZoomMeeting =async (req, res) => {
   }
 };
 
+
+// get all schedule interview
+const getAllScheduleInterviewByCompany = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+   const interviews = await Interview.find({ companyId });
+    res.status(200).json(interviews);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch interviews" });
+  }
+}
+
 module.exports = {
   createCompany,
   loginCompany,
@@ -362,4 +367,5 @@ module.exports = {
   getAllDrives,
   registerForDrive,
   scheduleZoomMeeting,
+  getAllScheduleInterviewByCompany,
 };

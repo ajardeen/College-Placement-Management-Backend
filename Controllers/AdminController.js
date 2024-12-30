@@ -47,7 +47,7 @@ const getAllCompanies = async (req, res) => {
       industry: company.industry,
       location: company.location,
     }));
-    console.log(companyData);
+  
     res.status(200).json(companyData);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch companies" });
@@ -171,7 +171,7 @@ const getAllInterviews = async (req, res) => {
 const updateInterviewStatus = async (req, res) => {
   try {
     const { applicationId, scheduledDate, format, link, status, feedback } = req.body;
-   console.log( { applicationId, scheduledDate, format, link, status, feedback });
+  
    
     const interview = await Interview.findOne({ applicationId });
     if (!interview) {
